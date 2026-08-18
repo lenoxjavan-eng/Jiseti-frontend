@@ -22,8 +22,9 @@ export default function Login() {
     setUser({ name: found.name, email: found.email })
     localStorage.setItem('currentUser', JSON.stringify({ name: found.name, email: found.email }))
     setError(null)
-    // navigate to home
-    window.location.href = '/'
+    // navigate to home without reload
+    window.history.pushState({}, '', '/')
+    window.dispatchEvent(new PopStateEvent('popstate'))
   }
 
   return (

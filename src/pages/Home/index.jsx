@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
+import { AuthContext } from '../../context/AuthContext'
 
 export default function Home() {
+  const { user } = useContext(AuthContext)
   const hero = {
     display: 'flex',
     flexDirection: 'column',
@@ -34,9 +36,23 @@ export default function Home() {
           A simple records app prototype. Create, view and manage records with a clean,
           minimal interface. Sign up or log in to get started.
         </p>
-        <a href="/register" style={cta}>Get Started</a>
+        <button
+          onClick={() => {
+            if (user) {
+              window.history.pushState({}, '', '/dashboard')
+            } else {
+              window.history.pushState({}, '', '/register')
+            }
+            window.dispatchEvent(new PopStateEvent('popstate'))
+          }}
+          style={cta}
+          id="get-started"
+        >
+          Get Started
+        </button>
       </main>
       <Footer />
     </div>
   )
 }
+

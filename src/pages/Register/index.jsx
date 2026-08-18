@@ -25,7 +25,8 @@ export default function Register() {
     setUser({ name, email })
     localStorage.setItem('currentUser', JSON.stringify({ name, email }))
     setError(null)
-    window.location.href = '/'
+    window.history.pushState({}, '', '/')
+    window.dispatchEvent(new PopStateEvent('popstate'))
   }
 
   return (
