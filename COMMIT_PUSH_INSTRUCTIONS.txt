@@ -1,0 +1,27 @@
+Suggested commit sequence and commands to push changes to branch `Javan`:
+
+1) Create branch and switch to it
+   git checkout -b Javan
+
+2) Add RecordForm component
+   git add src/components/RecordForm
+   git commit -m "feat(record-form): add reusable RecordForm with location & attachments"
+
+3) Add shared record constants
+   git add src/constants/records.js
+   git commit -m "chore(constants): add record types and statuses"
+
+4) Wire routes for create pages and records
+   git add src/App.jsx
+   git commit -m "feat(routing): add create and records routes (CreateRecord, CreateRedFlag, CreateIntervention, MyRecords)"
+
+5) Update mock data to match shared record structure
+   git add src/data/mockRecords.js
+   git commit -m "test(data): update mockRecords to shared record structure"
+
+6) Push branch to remote
+   git push origin Javan
+
+Notes:
+- Make sure your local repo has the remote set (origin).
+- Run `npm install` then `npm run dev` to test locally.
