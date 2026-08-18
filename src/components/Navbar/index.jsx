@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../context/AuthContext'
+import Modal from '../Modal'
 
 export default function Navbar() {
   const navStyle = {
@@ -24,6 +25,7 @@ export default function Navbar() {
   }
 
   const { user, logout } = useContext(AuthContext)
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
 
   function navigate(e, path){
     e && e.preventDefault()
@@ -32,6 +34,7 @@ export default function Navbar() {
   }
 
   return (
+    <>
     <nav style={navStyle} aria-label="Main navigation">
       <div style={brandStyle}>
         <a href="/" onClick={(e) => navigate(e, '/')} style={{ color: 'inherit', textDecoration: 'none' }}>Jiseti</a>
@@ -53,10 +56,31 @@ export default function Navbar() {
             <a href="/about" onClick={(e) => navigate(e, '/about')} style={linkStyle}>About</a>
             <a href="/how" onClick={(e) => navigate(e, '/how')} style={linkStyle}>How it works</a>
             <a href="/reports" onClick={(e) => navigate(e, '/reports')} style={linkStyle}>View reports</a>
-            <button onClick={() => { logout(); navigate(null, '/') }} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ef4444' }}>Logout</button>
+            <button onClick={() => setShowLogoutConfirm(true)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ef4444' }}>Logout</button>
           </>
         )}
       </div>
     </nav>
+    {showLogoutConfirm && (
+      <Modal
+        title="Confirm logout"
+        onClose={() => setShowLogoutConfirm(false)}
+        actions={[
+          { label: 'Cancel', onClick: () => setShowLogoutConfirm(false) },
+          { label: 'Logout', onClick: () => { logout(); setShowLogoutConfirm(false); navigate(null, '/'); }, primary: true },
+        ]}
+      >
+        <p>Are you sure you want to log out?</p>
+      </Modal>
+    )}
+    </>
   )
 }
+
+export function NavbarWithModalWrapper(props){
+  // This wrapper re-exports the Navbar and renders modals via portal-like return when needed
+  return <Navbar {...props} />
+}
+
+// logout confirmation modal rendered at top-level of module so JSX remains valid
+
