@@ -3,16 +3,17 @@ import RecordForm from '../../components/RecordForm'
 import { saveRecord } from '../../services/api'
 import { useNavigate } from 'react-router-dom'
 
-export default function CreateRecord(){
+export default function CreateIntervention(){
   const navigate = useNavigate()
   async function handleSubmit(record){
+    record.type = 'intervention'
     await saveRecord(record)
     navigate('/records')
   }
   return (
     <section>
-      <h2>Create Record</h2>
-      <RecordForm onSubmit={handleSubmit} />
+      <h2>Create Intervention</h2>
+      <RecordForm initial={{ type: 'intervention' }} onSubmit={handleSubmit} />
     </section>
   )
 }
