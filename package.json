@@ -1,0 +1,26 @@
+{
+  "name": "jiseti-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lenoxjavan-eng/Jiseti-frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lenoxjavan-eng/Jiseti-frontend/issues"
+  },
+  "homepage": "https://github.com/lenoxjavan-eng/Jiseti-frontend#readme",
+  "dependencies": {
+    "axios": "^1.19.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2"
+  }
+}
