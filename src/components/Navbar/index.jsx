@@ -56,7 +56,13 @@ export default function Navbar() {
             <a href="/about" onClick={(e) => navigate(e, '/about')} style={linkStyle}>About</a>
             <a href="/how" onClick={(e) => navigate(e, '/how')} style={linkStyle}>How it works</a>
             <a href="/reports" onClick={(e) => navigate(e, '/reports')} style={linkStyle}>View reports</a>
-            <button onClick={() => setShowLogoutConfirm(true)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ef4444' }}>Logout</button>
+            <button onClick={() => setShowLogoutConfirm(true)} aria-label="Logout" style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 6 }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+            </button>
           </>
         )}
       </div>
@@ -66,7 +72,6 @@ export default function Navbar() {
         title="Confirm logout"
         onClose={() => setShowLogoutConfirm(false)}
         actions={[
-          { label: 'Cancel', onClick: () => setShowLogoutConfirm(false) },
           { label: 'Logout', onClick: () => { logout(); setShowLogoutConfirm(false); navigate(null, '/'); }, primary: true },
         ]}
       >
