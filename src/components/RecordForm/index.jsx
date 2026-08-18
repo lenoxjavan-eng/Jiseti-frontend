@@ -76,7 +76,16 @@ export default function RecordForm({ initial = {}, onSubmit }){
 
       <div style={{marginBottom:8}}>
         <label>Attach media (optional)</label>
-        <input type="file" accept="image/*,video/*" />
+        <input type="file" accept="image/*,video/*" onChange={e=>{
+          const file = e.target.files && e.target.files[0]
+          if(!file) return
+          const reader = new FileReader()
+          reader.onload = ()=>{
+            update({ media: reader.result })
+          }
+          reader.readAsDataURL(file)
+        }} />
+        {form.media && <div style={{marginTop:8}}><img src={form.media} alt="preview" style={{maxWidth:200}}/></div>}
       </div>
 
       <div style={{marginTop:12}}>
