@@ -1,0 +1,119 @@
+.filter {
+  position: relative;
+  display: inline-block;
+}
+
+.filter__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter__toggle:hover {
+  border-color: #d1d5db;
+  background-color: #f9fafb;
+}
+
+.filter__toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.filter__badge {
+  display: inline-block;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter__panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 220px;
+}
+
+.filter__section {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter__section:last-of-type {
+  border-bottom: none;
+}
+
+.filter__title {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.filter__options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #374151;
+}
+
+.filter__option input {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.filter__option span {
+  user-select: none;
+}
+
+.filter__clear-btn {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 12px 16px;
+  padding: 8px 12px;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter__clear-btn:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
