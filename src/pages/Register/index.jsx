@@ -32,27 +32,29 @@ export default function Register() {
   return (
     <div>
       <Navbar />
-      <main style={{ padding: 24, maxWidth: 520, margin: '32px auto' }}>
-        <h2 style={{ marginBottom: 8 }}>Create account</h2>
-        <p style={{ color: '#6b7280', marginBottom: 16 }}>Register a new account</p>
-        <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 12 }}>
-          <label>
-            Name
-            <Input value={name} onChange={(e) => setName(e.target.value)} required style={{ width: '100%', padding: 8, marginTop: 6 }} />
-          </label>
-          <label>
-            Email
-            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ width: '100%', padding: 8, marginTop: 6 }} />
-          </label>
-          <label>
-            Password
-            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ width: '100%', padding: 8, marginTop: 6 }} />
-          </label>
-          {error && <div style={{ color: 'crimson' }}>{error}</div>}
-          <div>
-            <Button type="submit" style={{ padding: '10px 14px', background: '#059669', color: '#fff', border: 'none', borderRadius: 6 }}>Create account</Button>
-          </div>
-        </form>
+      <main style={{ padding: 24 }}>
+        <div className="form-card">
+          <h2 style={{ marginBottom: 8 }}>Create account</h2>
+          <p style={{ color: '#6b7280', marginBottom: 16 }}>Register a new account</p>
+          <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 12 }}>
+            <label>
+              <span className="form-label">Name</span>
+              <Input value={name} onChange={(e) => setName(e.target.value)} required />
+            </label>
+            <label>
+              <span className="form-label">Email</span>
+              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </label>
+            <label>
+              <span className="form-label">Password</span>
+              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </label>
+            {error && <div style={{ color: 'crimson' }}>{error}</div>}
+            <div>
+              <Button type="submit" className="secondary">Create account</Button>
+            </div>
+          </form>
+        </div>
       </main>
       <Footer />
     </div>
