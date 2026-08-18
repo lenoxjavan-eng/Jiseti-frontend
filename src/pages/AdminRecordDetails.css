@@ -1,0 +1,303 @@
+.admin-record-details {
+  padding: 32px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.admin-record-details__back {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 24px;
+}
+
+.admin-record-details__back:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.admin-record-details__container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+}
+
+.admin-record-details__main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.admin-record-details__header {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.admin-record-details__title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.admin-record-details__meta {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-record-details__type {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #dbeafe;
+  color: #0369a1;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.admin-record-details__divider {
+  color: #d1d5db;
+}
+
+.admin-record-details__date {
+  color: #6b7280;
+}
+
+.admin-record-details__section {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-record-details__section-title {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.admin-record-details__description {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.admin-record-details__location {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.admin-record-details__coord {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-record-details__coord-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.admin-record-details__coord-value {
+  font-size: 16px;
+  font-weight: 500;
+  color: #111827;
+  font-family: 'Courier New', monospace;
+}
+
+.admin-record-details__map-placeholder {
+  padding: 60px 20px;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.admin-record-details__reporter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-record-details__info-row {
+  display: flex;
+  gap: 12px;
+}
+
+.admin-record-details__label {
+  font-weight: 600;
+  color: #6b7280;
+  min-width: 100px;
+}
+
+.admin-record-details__value {
+  color: #111827;
+}
+
+.admin-record-details__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-record-details__status-card,
+.admin-record-details__info-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-record-details__card-title {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.admin-record-details__card-subtitle {
+  margin: 0 0 16px 0;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.admin-record-details__status-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-record-details__status-btn {
+  padding: 12px 16px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.admin-record-details__status-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-record-details__status-btn--investigation {
+  background-color: #fef3c7;
+  color: #b45309;
+  border-color: #fbbf24;
+}
+
+.admin-record-details__status-btn--investigation:hover:not(:disabled) {
+  background-color: #fcd34d;
+  border-color: #f59e0b;
+}
+
+.admin-record-details__status-btn--investigation.active {
+  background-color: #f59e0b;
+  color: white;
+  border-color: #d97706;
+}
+
+.admin-record-details__status-btn--rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.admin-record-details__status-btn--rejected:hover:not(:disabled) {
+  background-color: #fecaca;
+  border-color: #f87171;
+}
+
+.admin-record-details__status-btn--rejected.active {
+  background-color: #ef4444;
+  color: white;
+  border-color: #dc2626;
+}
+
+.admin-record-details__status-btn--resolved {
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
+}
+
+.admin-record-details__status-btn--resolved:hover:not(:disabled) {
+  background-color: #a7f3d0;
+  border-color: #34d399;
+}
+
+.admin-record-details__status-btn--resolved.active {
+  background-color: #10b981;
+  color: white;
+  border-color: #059669;
+}
+
+.admin-record-details__info-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.admin-record-details__info-list dt {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.admin-record-details__info-list dd {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+.admin-record-details__capitalize {
+  text-transform: capitalize;
+}
+
+@media (max-width: 768px) {
+  .admin-record-details {
+    padding: 16px;
+  }
+
+  .admin-record-details__container {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-record-details__header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .admin-record-details__title {
+    font-size: 20px;
+  }
+
+  .admin-record-details__location {
+    flex-direction: column;
+  }
+}
