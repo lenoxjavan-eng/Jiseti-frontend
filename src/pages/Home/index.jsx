@@ -36,20 +36,18 @@ export default function Home() {
           A simple records app prototype. Create, view and manage records with a clean,
           minimal interface. Sign up or log in to get started.
         </p>
-        <button
-          onClick={() => {
-            if (user) {
-              window.history.pushState({}, '', '/dashboard')
-            } else {
+        {!user && (
+          <button
+            onClick={() => {
               window.history.pushState({}, '', '/register')
-            }
-            window.dispatchEvent(new PopStateEvent('popstate'))
-          }}
-          style={cta}
-          id="get-started"
-        >
-          Get Started
-        </button>
+              window.dispatchEvent(new PopStateEvent('popstate'))
+            }}
+            style={cta}
+            id="get-started"
+          >
+            Get Started
+          </button>
+        )}
       </main>
       <Footer />
     </div>
