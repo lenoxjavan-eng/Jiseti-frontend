@@ -1,6 +1,6 @@
 :root {
-  --primary-color: #3b82f6;
-  --primary-hover: #2563eb;
+  --primary-color: #10b981;
+  --primary-hover: #059669;
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --danger-color: #ef4444;
@@ -87,6 +87,10 @@ button {
 .records-list { display:grid; gap:12px }
 .record-card { border:1px solid #e6eef8; padding:12px; border-radius:8px; background:#fff }
 .record-card .meta { display:flex; justify-content:space-between; align-items:center }
+
+.type-badge { font-size:12px; padding:4px 8px; border-radius:999px; color:#fff; text-transform:capitalize }
+.type-badge.red-flag { background: var(--danger-color) }
+.type-badge.intervention { background: var(--primary-color) }
 
 /* Location picker map */
 .map-wrapper { width:100%; border:1px solid #e6eef8; border-radius:8px; overflow:hidden }

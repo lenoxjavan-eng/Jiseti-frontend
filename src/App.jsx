@@ -7,6 +7,7 @@ import CreateRecord from './pages/CreateRecord'
 import CreateRedFlag from './pages/CreateRedFlag'
 import CreateIntervention from './pages/CreateIntervention'
 import MyRecords from './pages/MyRecords'
+import EditRecord from './pages/EditRecord'
 import './App.css'
 import Navbar from './components/Navbar'
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/create/intervention" element={<CreateIntervention />} />
         <Route path="/my-records" element={<MyRecords />} />
         <Route path="/records" element={<MyRecords />} />
+        <Route path="/edit/:id" element={<EditRecord />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/record/:id" element={<AdminRecordDetails />} />
         <Route path="/" element={<Navigate to="/" replace />} />
