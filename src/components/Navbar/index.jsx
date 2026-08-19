@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
   const navStyle = {
@@ -26,9 +27,13 @@ export default function Navbar() {
     <nav style={navStyle} aria-label="Main navigation">
       <div style={brandStyle}>Jiseti</div>
       <div style={navLinks}>
-        <a href="/" style={linkStyle}>Home</a>
-        <a href="/login" style={linkStyle}>Login</a>
-        <a href="/register" style={linkStyle}>Register</a>
+        <Link to="/" style={linkStyle}>Home</Link>
+        <Link to="/create" style={linkStyle}>Create</Link>
+        <Link to="/create/red-flag" style={linkStyle}>Create Red-Flag</Link>
+        <Link to="/create/intervention" style={linkStyle}>Create Intervention</Link>
+        <Link to="/my-records" style={linkStyle}>My Records</Link>
+        <Link to="/login" style={linkStyle}>Login</Link>
+        <Link to="/register" style={linkStyle}>Register</Link>
       </div>
     </nav>
   )
