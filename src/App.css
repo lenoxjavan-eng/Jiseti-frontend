@@ -80,7 +80,7 @@ button {
   width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:6px; font-size:14px; background:#fff
 }
 .form-actions { display:flex; gap:8px; justify-content:flex-end }
-.btn { background:var(--primary-color); color:#fff; padding:8px 14px; border-radius:6px; border:none; cursor:pointer }
+.btn { background:var(--primary-color); color:#fff; padding:8px 14px; border-radius:6px; border:none; cursor:pointer; text-decoration:none; display:inline-block }
 .btn.secondary { background:#fff; color:var(--text-dark); border:1px solid var(--border-color) }
 
 /* Card list */

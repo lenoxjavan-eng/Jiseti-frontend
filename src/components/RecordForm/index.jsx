@@ -22,8 +22,15 @@ export default function RecordForm({ initial = {}, onSubmit }){
 
   function handleFile(e){
     const files = Array.from(e.target.files || [])
-    const attachments = files.map(f=> ({ name: f.name, type: f.type }))
-    update({ attachments: (form.attachments||[]).concat(attachments) })
+    if(files.length === 0) return
+    const readers = files.map(f=> new Promise(resolve=>{
+      const r = new FileReader()
+      r.onload = ()=> resolve({ name: f.name, type: f.type, preview: r.result })
+      r.readAsDataURL(f)
+    }))
+    Promise.all(readers).then(arr=>{
+      update({ attachments: (form.attachments||[]).concat(arr) })
+    })
   }
 
   function submit(e){
