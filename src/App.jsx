@@ -3,9 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import AdminDashboard from './pages/AdminDashboard'
 import AdminRecordDetails from './pages/AdminRecordDetails'
 import Home from './pages/Home'
-import CreateRecord from './pages/CreateRecord'
 import CreateRedFlag from './pages/CreateRedFlag'
-import CreateIntervention from './pages/CreateIntervention'
 import MyRecords from './pages/MyRecords'
 import EditRecord from './pages/EditRecord'
 import './App.css'
@@ -17,9 +15,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/create" element={<CreateRecord />} />
         <Route path="/create/red-flag" element={<CreateRedFlag />} />
-        <Route path="/create/intervention" element={<CreateIntervention />} />
         <Route path="/my-records" element={<MyRecords />} />
         <Route path="/records" element={<MyRecords />} />
         <Route path="/edit/:id" element={<EditRecord />} />
