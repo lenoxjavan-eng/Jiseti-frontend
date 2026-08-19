@@ -42,9 +42,9 @@ export default function LocationPicker({ value, onChange }){
   return (
     <div style={{display:'grid',gridTemplateColumns:'1fr 200px',gap:12}}>
       <div>
-        <input placeholder="Search location or paste lat,lon" value={value||''} onChange={e=>onChange && onChange(e.target.value)} />
-        <div style={{marginTop:8,border:'1px solid #e6eef8'}}>
-          <MapContainer center={pos || [0,0]} zoom={pos?13:2} style={{height:260}}>
+        <input className="form-field" placeholder="Search location or paste lat,lon" value={value||''} onChange={e=>onChange && onChange(e.target.value)} />
+        <div className="map-wrapper" style={{marginTop:8}}>
+          <MapContainer center={pos || [0,0]} zoom={pos?13:2} className="map">
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <ClickHandler onMapClick={handleMapClick} />
             {pos && <Marker position={pos} />}

@@ -35,19 +35,19 @@ export default function RecordForm({ initial = {}, onSubmit }){
   }
 
   return (
-    <form onSubmit={submit} style={{maxWidth:720,display:'grid',gap:10}}>
-      <div>
+    <form onSubmit={submit} className="record-form container">
+      <div className="form-field">
         <label>Title</label>
         <input required value={form.title} onChange={e=>update({ title: e.target.value })} />
       </div>
 
-      <div>
+      <div className="form-field">
         <label>Description</label>
         <textarea required value={form.description} onChange={e=>update({ description: e.target.value })} />
       </div>
 
-      <div style={{display:'flex',gap:8}}>
-        <div style={{flex:1}}>
+      <div className="form-row">
+        <div className="col form-field">
           <label>Type</label>
           <select value={form.type} onChange={e=>update({ type: e.target.value })}>
             <option value="">Select type</option>
@@ -55,7 +55,7 @@ export default function RecordForm({ initial = {}, onSubmit }){
             <option value="intervention">Intervention</option>
           </select>
         </div>
-        <div style={{flex:1}}>
+        <div className="col form-field">
           <label>Status</label>
           <select value={form.status} onChange={e=>update({ status: e.target.value })}>
             <option value="pending">pending</option>
@@ -66,17 +66,17 @@ export default function RecordForm({ initial = {}, onSubmit }){
         </div>
       </div>
 
-      <div>
+      <div className="form-field">
         <label>Reporter name</label>
         <input value={form.createdBy} onChange={e=>update({ createdBy: e.target.value })} />
       </div>
 
-      <div>
+      <div className="form-field">
         <label>Location (lat / lon)</label>
         <LatLngInputs latitude={form.latitude} longitude={form.longitude} onChange={vals=>update(vals)} />
       </div>
 
-      <div>
+      <div className="form-field">
         <label>Pick on map</label>
         <LocationPicker value={{ latitude: form.latitude, longitude: form.longitude }} onChange={vals=>{
           if(typeof vals === 'string'){
@@ -86,7 +86,7 @@ export default function RecordForm({ initial = {}, onSubmit }){
         }} />
       </div>
 
-      <div>
+      <div className="form-field">
         <label>Attachments (images / videos) — optional</label>
         <input type="file" accept="image/*,video/*" multiple onChange={handleFile} />
         <div style={{marginTop:8}}>
@@ -94,8 +94,8 @@ export default function RecordForm({ initial = {}, onSubmit }){
         </div>
       </div>
 
-      <div style={{display:'flex',gap:8,justifyContent:'flex-end'}}>
-        <button type="submit">Save Record</button>
+      <div className="form-actions">
+        <button type="submit" className="btn">Save Record</button>
       </div>
     </form>
   )

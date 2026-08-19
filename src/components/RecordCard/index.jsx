@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function RecordCard({record}){
   return (
-    <article style={{border:'1px solid #e6eef8',padding:12,borderRadius:8,marginBottom:12}}>
-      <div style={{display:'flex',justifyContent:'space-between'}}>
+    <article className="record-card">
+      <div className="meta">
         <strong>{record.title}</strong>
         <small>{record.type} • {record.status}</small>
       </div>
