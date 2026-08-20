@@ -17,7 +17,7 @@ export function AuthProvider({ children }){
   const [user, setUser] = useState(getStoredUser)
 
   function signIn(nextUser) {
-    const safeUser = { name: nextUser.name, email: nextUser.email }
+    const safeUser = { name: nextUser.name, email: nextUser.email, role: nextUser.role || 'user' }
     window.localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(safeUser))
     setUser(safeUser)
   }

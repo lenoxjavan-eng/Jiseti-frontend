@@ -20,17 +20,33 @@ function ClickHandler({ onMapClick }){
   return null
 }
 
+function toValidPosition(value) {
+  let latitude
+  let longitude
+
+  if (typeof value === 'string') {
+    ;[latitude, longitude] = value.split(',')
+  } else if (value) {
+    ({ latitude, longitude } = value)
+  }
+
+  const parsedLatitude = Number.parseFloat(latitude)
+  const parsedLongitude = Number.parseFloat(longitude)
+  const isValid = Number.isFinite(parsedLatitude)
+    && Number.isFinite(parsedLongitude)
+    && parsedLatitude >= -90
+    && parsedLatitude <= 90
+    && parsedLongitude >= -180
+    && parsedLongitude <= 180
+
+  return isValid ? [parsedLatitude, parsedLongitude] : null
+}
+
 export default function LocationPicker({ value, onChange }){
   const [pos, setPos] = useState(null)
 
   useEffect(()=>{
-    if(!value) return
-    if(typeof value === 'string'){
-      const [lat, lon] = value.split(',')
-      if(lat && lon) setPos([parseFloat(lat), parseFloat(lon)])
-    } else if(value.latitude && value.longitude){
-      setPos([parseFloat(value.latitude), parseFloat(value.longitude)])
-    }
+    setPos(toValidPosition(value))
   },[value])
 
   function handleMapClick(latlng){

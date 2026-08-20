@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 
 import mockRecords from "../../data/mockRecords";
 import RecordCard from "../../components/RecordCard/RecordCard";
+import { AuthContext } from "../../context/AuthContext";
 
 const filters = [
   {
@@ -27,29 +28,18 @@ const filters = [
 ];
 
 export default function MyRecords() {
-  /*
-    Temporary mock user.
-
-    Person 1's AuthContext will eventually provide
-    the currently logged-in user.
-  */
-  const currentUser = "John Mwangi";
+  const { user } = useContext(AuthContext);
+  const currentUser = user?.name || "";
 
   const [activeFilter, setActiveFilter] =
     useState("all");
 
-  /*
-    Get only records belonging to the current user.
-  */
   const userRecords = useMemo(() => {
     return mockRecords.filter(
       (record) => record.createdBy === currentUser
     );
   }, []);
 
-  /*
-    Apply the selected status filter.
-  */
   const filteredRecords = userRecords.filter(
     (record) => {
       if (activeFilter === "all") {
@@ -61,26 +51,26 @@ export default function MyRecords() {
   );
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
-
-        {/* ================= PAGE HEADER ================= */}
-        <section className="mb-8">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">
+    <main className="records-page">
+      <div className="records-page__inner">
+        <section className="records-page__header">
+          <div>
+          <p className="eyebrow">
             JISETI
           </p>
 
-          <h1 className="mt-1 text-3xl font-bold text-slate-900">
+          <h1>
             My Records
           </h1>
 
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="records-page__description">
             View and manage the reports you have submitted.
           </p>
+          </div>
+          <span className="records-page__count">{userRecords.length} reports</span>
         </section>
 
-        {/* ================= FILTERS ================= */}
-        <nav className="mb-6 flex gap-2 overflow-x-auto pb-2">
+        <nav className="records-page__filters" aria-label="Filter reports">
           {filters.map((filter) => (
             <button
               key={filter.value}
@@ -88,10 +78,10 @@ export default function MyRecords() {
               onClick={() =>
                 setActiveFilter(filter.value)
               }
-              className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              className={`records-page__filter ${
                 activeFilter === filter.value
-                  ? "bg-blue-600 text-white"
-                  : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                  ? "is-active"
+                  : ""
               }`}
             >
               {filter.label}
@@ -99,8 +89,7 @@ export default function MyRecords() {
           ))}
         </nav>
 
-        {/* ================= RECORDS ================= */}
-        <section className="grid gap-4">
+        <section className="records-page__list">
           {filteredRecords.length > 0 ? (
             filteredRecords.map((record) => (
               <RecordCard
@@ -109,12 +98,12 @@ export default function MyRecords() {
               />
             ))
           ) : (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-              <h3 className="font-semibold text-slate-900">
+            <div className="records-page__empty">
+              <h3>
                 No records found
               </h3>
 
-              <p className="mt-2 text-sm text-slate-500">
+              <p>
                 There are no records matching this filter.
               </p>
             </div>

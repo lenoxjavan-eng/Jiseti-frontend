@@ -1,67 +1,48 @@
 import React, { useContext, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 
-export default function Login(){
+const ADMIN_EMAIL = 'admin@jiseti.local'
+const ADMIN_PASSWORD = 'Admin@123'
+
+export default function AdminLogin() {
   const { signIn } = useContext(AuthContext)
   const navigate = useNavigate()
-  const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
   function handleSubmit(event) {
     event.preventDefault()
-    const users = JSON.parse(window.localStorage.getItem('mockUsers') || '[]')
-    const normalizedEmail = email.trim().toLowerCase()
-    const matchingUser = users.find(
-      (candidate) => candidate.email.toLowerCase() === normalizedEmail && candidate.password === password,
-    )
 
-    if (!matchingUser) {
-      setError('We could not find an account with those details. Register first if you are new.')
+    if (email.trim().toLowerCase() !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+      setError('Invalid administrator email or password.')
       return
     }
 
-    signIn(matchingUser)
-    const destination = location.state?.from?.pathname || '/dashboard'
-    navigate(destination, { replace: true })
+    signIn({ name: 'Jiseti Administrator', email: ADMIN_EMAIL, role: 'admin' })
+    navigate('/admin/dashboard', { replace: true })
   }
 
   return (
     <main style={pageStyle}>
-      <section style={cardStyle} aria-labelledby="login-title">
-        <p style={eyebrowStyle}>JISETI</p>
-        <h1 id="login-title" style={titleStyle}>Welcome back</h1>
-        <p style={subtitleStyle}>Log in to manage your reports.</p>
+      <section style={cardStyle} aria-labelledby="admin-login-title">
+        <p style={eyebrowStyle}>JISETI ADMIN</p>
+        <h1 id="admin-login-title" style={titleStyle}>Administrator sign in</h1>
+        <p style={subtitleStyle}>Use your administrator credentials to manage reports.</p>
         <form onSubmit={handleSubmit} style={formStyle}>
           <label style={labelStyle}>
-            Email address
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              autoComplete="email"
-              required
-              style={inputStyle}
-            />
+            Administrator email
+            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="username" required style={inputStyle} />
           </label>
           <label style={labelStyle}>
             Password
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              autoComplete="current-password"
-              required
-              style={inputStyle}
-            />
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required style={inputStyle} />
           </label>
           {error && <p role="alert" style={errorStyle}>{error}</p>}
-          <button type="submit" style={buttonStyle}>Log in</button>
+          <button type="submit" style={buttonStyle}>Sign in as administrator</button>
         </form>
-        <p style={footerTextStyle}>New to Jiseti? <Link to="/register">Create an account</Link>.</p>
-        <p style={footerTextStyle}><Link to="/admin/login">Administrator sign in</Link></p>
+        <p style={footerTextStyle}><Link to="/login">Return to user login</Link></p>
       </section>
     </main>
   )

@@ -6,64 +6,42 @@ export default function Navbar() {
   const { user, signOut } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  const navStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '12px 20px',
-    borderBottom: '1px solid #e6e6e6',
-    background: '#fff',
-    position: 'sticky',
-    top: 0,
-    zIndex: 20,
-  }
-
-  const brandStyle = { fontWeight: 700, fontSize: 18 }
-  const navLinks = { display: 'flex', gap: 12, alignItems: 'center' }
-  const linkStyle = ({ isActive }) => ({
-    color: '#111827',
-    textDecoration: 'none',
-    padding: '8px 12px',
-    borderRadius: 6,
-    background: isActive ? '#e8f3eb' : 'transparent',
-    fontWeight: isActive ? 700 : 500,
-  })
-
-  const logoutStyle = {
-    color: '#b42318',
-    border: '1px solid #fecaca',
-    background: '#fff',
-    padding: '8px 12px',
-    borderRadius: 6,
-    cursor: 'pointer',
-  }
+  const linkClass = ({ isActive }) => `site-navbar__link${isActive ? ' is-active' : ''}`
 
   return (
-    <nav style={navStyle} aria-label="Main navigation">
-      <Link to="/" style={{ ...brandStyle, color: '#111827', textDecoration: 'none' }}>Jiseti</Link>
-      <div style={navLinks}>
-        <NavLink to="/" end style={linkStyle}>Home</NavLink>
-        {user ? (
-          <>
-            <NavLink to="/records" style={linkStyle}>My records</NavLink>
-            <button
-              type="button"
-              style={logoutStyle}
-              onClick={() => {
-                signOut()
-                navigate('/')
-              }}
-            >
-              Log out
-            </button>
-          </>
-        ) : (
-          <>
-            <NavLink to="/login" style={linkStyle}>Log in</NavLink>
-            <NavLink to="/register" style={linkStyle}>Register</NavLink>
-          </>
-        )}
+    <header className="site-navbar">
+      <div className="site-navbar__inner">
+        <Link to="/" className="site-navbar__brand">
+          <span className="site-navbar__mark">J</span>
+          <span>Jiseti</span>
+        </Link>
+        <nav className="site-navbar__links" aria-label="Main navigation">
+          <NavLink to="/" end className={linkClass}>Home</NavLink>
+          <NavLink to="/how" className={linkClass}>How it works</NavLink>
+          <NavLink to="/about" className={linkClass}>About</NavLink>
+          <NavLink to="/reports" className={linkClass}>Reports</NavLink>
+          {user ? (
+            <>
+              {user.role === 'admin' && <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>}
+              <button
+                type="button"
+                className="site-navbar__logout"
+                onClick={() => {
+                  signOut()
+                  navigate('/')
+                }}
+              >
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink to="/login" className={linkClass}>Log in</NavLink>
+              <NavLink to="/register" className="button button--small button--primary">Register</NavLink>
+            </>
+          )}
+        </nav>
       </div>
-    </nav>
+    </header>
   )
 }
