@@ -14,7 +14,7 @@ import './App.css'
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -27,6 +27,7 @@ function App() {
         <Route path="/create/intervention" element={<CreateIntervention />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/record/:id" element={<AdminRecordDetails />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   )

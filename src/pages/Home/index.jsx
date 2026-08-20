@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../../components/Navbar'
+import { Link } from 'react-router-dom'
 import Footer from '../../components/Footer'
 
 export default function Home() {
@@ -27,14 +27,13 @@ export default function Home() {
 
   return (
     <div>
-      <Navbar />
       <main style={hero}>
         <h1 style={title}>Welcome to Jiseti</h1>
         <p style={subtitle}>
           A simple records app prototype. Create, view and manage records with a clean,
           minimal interface. Sign up or log in to get started.
         </p>
-        <a href="/register" style={cta}>Get Started</a>
+        <Link to="/register" style={cta}>Get Started</Link>
       </main>
       <Footer />
     </div>
