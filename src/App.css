@@ -161,6 +161,39 @@ body {
   line-height: 1.65;
 }
 
+.about-page__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+  align-items: center;
+  gap: 44px;
+}
+
+.about-page__image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.about-page__story {
+  max-width: 720px;
+  margin-top: 52px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-color);
+}
+
+.about-page__story h2 {
+  margin: 0 0 12px;
+  color: var(--text-dark);
+  font-size: 26px;
+}
+
+.about-page__story p {
+  margin: 0 0 12px;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
 .info-page__grid,
 .steps-list {
   display: grid;
@@ -586,6 +619,11 @@ body {
 
   .info-page__grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-page__intro {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
   .records-page {
