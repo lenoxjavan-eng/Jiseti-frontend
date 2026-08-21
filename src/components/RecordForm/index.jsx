@@ -7,7 +7,7 @@ export default function RecordForm({ initial = {}, onSubmit }){
     title: initial.title || '',
     description: initial.description || '',
     type: initial.type || 'red-flag',
-    status: initial.status || 'pending',
+    status: 'pending',
     latitude: initial.latitude || '',
     longitude: initial.longitude || '',
   })
@@ -28,39 +28,34 @@ export default function RecordForm({ initial = {}, onSubmit }){
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{maxWidth:720}}>
-      <div style={{marginBottom:8}}>
-        <label>Title</label>
-        <input value={form.title} onChange={e=>update({ title: e.target.value })} required />
+    <form onSubmit={handleSubmit} className="record-form">
+      <div className="record-form__field">
+        <label htmlFor="record-title">Title</label>
+        <input id="record-title" value={form.title} onChange={e=>update({ title: e.target.value })} placeholder="Give your report a clear title" required />
       </div>
 
-      <div style={{marginBottom:8}}>
-        <label>Description</label>
-        <textarea value={form.description} onChange={e=>update({ description: e.target.value })} rows={4} />
+      <div className="record-form__field">
+        <label htmlFor="record-description">Description</label>
+        <textarea id="record-description" value={form.description} onChange={e=>update({ description: e.target.value })} rows={5} placeholder="Describe what happened and where it happened" required />
       </div>
 
-      <div style={{display:'flex',gap:8,marginBottom:8}}>
-        <div>
-          <label>Type</label>
-          <select value={form.type} onChange={e=>update({ type: e.target.value })}>
-            <option value="red-flag">red-flag</option>
-            <option value="intervention">intervention</option>
+      <div className="record-form__row">
+        <div className="record-form__field">
+          <label htmlFor="record-type">Report type</label>
+          <select id="record-type" value={form.type} onChange={e=>update({ type: e.target.value })}>
+            <option value="red-flag">Red flag</option>
+            <option value="intervention">Intervention</option>
           </select>
         </div>
-        <div>
-          <label>Status</label>
-          <select value={form.status} onChange={e=>update({ status: e.target.value })}>
-            <option value="pending">pending</option>
-            <option value="under-investigation">under-investigation</option>
-            <option value="rejected">rejected</option>
-            <option value="resolved">resolved</option>
-          </select>
+        <div className="record-form__field">
+          <label htmlFor="record-status">Status</label>
+          <input id="record-status" value="Pending" readOnly />
         </div>
       </div>
 
-      <div style={{marginBottom:8}}>
-        <label>Location</label>
-        <div style={{marginTop:6}}>
+      <fieldset className="record-form__location">
+        <legend>Location</legend>
+        <div className="record-form__picker">
           <LocationPicker value={`${form.latitude},${form.longitude}`} onChange={(val)=>{
             // LocationPicker can pass { latitude, longitude } or a string
             if(typeof val === 'string'){
@@ -72,11 +67,11 @@ export default function RecordForm({ initial = {}, onSubmit }){
           }} />
         </div>
         <LatLngInputs latitude={form.latitude} longitude={form.longitude} onChange={(v)=>update(v)} />
-      </div>
+      </fieldset>
 
-      <div style={{marginBottom:8}}>
-        <label>Attach media (optional)</label>
-        <input type="file" accept="image/*,video/*" onChange={e=>{
+      <div className="record-form__field">
+        <label htmlFor="record-media">Supporting image or video <span>(optional)</span></label>
+        <input id="record-media" type="file" accept="image/*,video/*" onChange={e=>{
           const file = e.target.files && e.target.files[0]
           if(!file) return
           const reader = new FileReader()
@@ -85,11 +80,11 @@ export default function RecordForm({ initial = {}, onSubmit }){
           }
           reader.readAsDataURL(file)
         }} />
-        {form.media && <div style={{marginTop:8}}><img src={form.media} alt="preview" style={{maxWidth:200}}/></div>}
+        {form.media && <div className="record-form__preview"><img src={form.media} alt="Selected media preview" /></div>}
       </div>
 
-      <div style={{marginTop:12}}>
-        <button type="submit">Save Record</button>
+      <div className="record-form__actions">
+        <button className="button button--primary" type="submit">Submit report</button>
       </div>
     </form>
   )

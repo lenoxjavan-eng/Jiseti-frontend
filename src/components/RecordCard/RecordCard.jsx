@@ -26,23 +26,11 @@ function getStatusStyles(status) {
   return styles[status] || "bg-slate-100 text-slate-700";
 }
 
-export default function RecordCard({ record }) {
+export default function RecordCard({ record, onDelete, showActions = true }) {
   const navigate = useNavigate();
 
   // Only pending records can be edited or deleted.
   const canModify = record.status === "pending";
-
-  const handleDelete = () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this record?"
-    );
-
-    if (confirmed) {
-      // Temporary mock behavior.
-      // Flask API will handle this later.
-      console.log("Delete record:", record.id);
-    }
-  };
 
   return (
     <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
@@ -83,7 +71,7 @@ export default function RecordCard({ record }) {
       </div>
 
       {/* Actions */}
-      <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-5">
+      {showActions && <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-5">
         {/* View */}
         <button
           type="button"
@@ -110,14 +98,14 @@ export default function RecordCard({ record }) {
             {/* Delete */}
             <button
               type="button"
-              onClick={handleDelete}
+              onClick={() => onDelete?.(record.id)}
               className="rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
             >
               Delete
             </button>
           </>
         )}
-      </div>
+      </div>}
     </article>
   );
 }

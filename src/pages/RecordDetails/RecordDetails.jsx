@@ -1,6 +1,8 @@
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import mockRecords from "../../data/mockRecords";
+import { AuthContext } from "../../context/AuthContext";
+import { deleteRecord, fetchRecords } from "../../services/api";
 
 function formatType(type) {
   return type === "red-flag"
@@ -33,18 +35,28 @@ function getStatusStyles(status) {
 export default function RecordDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const [records, setRecords] = useState([]);
+
+  useEffect(() => {
+    fetchRecords().then(setRecords);
+  }, []);
 
   /*
     Find the record using the ID from the URL.
   */
-  const record = mockRecords.find(
+  const record = records.find(
     (item) => String(item.id) === String(id)
   );
 
   /*
     Handle an invalid/non-existent record.
   */
-  if (!record) {
+  if (!records.length) {
+    return <main className="flex min-h-screen items-center justify-center bg-slate-50 p-6">Loading record...</main>;
+  }
+
+  if (!record || record.createdBy !== user?.name) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
@@ -78,14 +90,13 @@ export default function RecordDetails() {
     Temporary delete behavior.
     The Flask backend will handle the real deletion later.
   */
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this record?"
     );
 
     if (confirmed) {
-      console.log("Delete record:", record.id);
-
+      await deleteRecord(record.id);
       navigate("/records");
     }
   };

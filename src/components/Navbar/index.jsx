@@ -17,12 +17,12 @@ export default function Navbar() {
         </Link>
         <nav className="site-navbar__links" aria-label="Main navigation">
           <NavLink to="/" end className={linkClass}>Home</NavLink>
-          <NavLink to="/how" className={linkClass}>How it works</NavLink>
+          <NavLink to="/how" className={linkClass}>Create report</NavLink>
           <NavLink to="/about" className={linkClass}>About</NavLink>
           <NavLink to="/reports" className={linkClass}>Reports</NavLink>
           {user ? (
             <>
-              {user.role === 'admin' && <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>}
+              {user.role === 'admin' && <NavLink to="/admin/dashboard" className={linkClass}>Admin Dashboard</NavLink>}
               <button
                 type="button"
                 className="site-navbar__logout"

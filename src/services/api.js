@@ -3,9 +3,10 @@ const STORAGE_KEY = 'jiseti_records'
 export async function fetchRecords(){
   const raw = localStorage.getItem(STORAGE_KEY)
   if(raw) return JSON.parse(raw)
-  // fallback to bundled mock records if localStorage empty
   const mock = await import('../data/mockRecords.js')
-  return mock.default || []
+  const records = mock.default || []
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records))
+  return records
 }
 
 export async function saveRecord(record){
@@ -17,4 +18,11 @@ export async function saveRecord(record){
   return record
 }
 
-export default { fetchRecords, saveRecord }
+export async function deleteRecord(recordId){
+  const list = await fetchRecords()
+  const remaining = list.filter((record) => String(record.id) !== String(recordId))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(remaining))
+  return remaining
+}
+
+export default { fetchRecords, saveRecord, deleteRecord }

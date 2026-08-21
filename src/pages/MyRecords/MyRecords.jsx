@@ -1,8 +1,8 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
-import mockRecords from "../../data/mockRecords";
 import RecordCard from "../../components/RecordCard/RecordCard";
 import { AuthContext } from "../../context/AuthContext";
+import { deleteRecord, fetchRecords } from "../../services/api";
 
 const filters = [
   {
@@ -31,14 +31,27 @@ export default function MyRecords() {
   const { user } = useContext(AuthContext);
   const currentUser = user?.name || "";
 
+  const [records, setRecords] = useState([]);
   const [activeFilter, setActiveFilter] =
     useState("all");
 
+  useEffect(() => {
+    fetchRecords().then(setRecords);
+  }, []);
+
   const userRecords = useMemo(() => {
-    return mockRecords.filter(
+    return records.filter(
       (record) => record.createdBy === currentUser
     );
-  }, []);
+  }, [records, currentUser]);
+
+  async function handleDelete(recordId) {
+    const confirmed = window.confirm("Are you sure you want to delete this record?");
+    if (!confirmed) return;
+
+    const remaining = await deleteRecord(recordId);
+    setRecords(remaining);
+  }
 
   const filteredRecords = userRecords.filter(
     (record) => {
@@ -95,6 +108,7 @@ export default function MyRecords() {
               <RecordCard
                 key={record.id}
                 record={record}
+                onDelete={handleDelete}
               />
             ))
           ) : (

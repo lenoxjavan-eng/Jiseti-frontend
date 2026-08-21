@@ -29,7 +29,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
-        <Route path="/how" element={<HowItWorks />} />
+        <Route path="/how" element={<ProtectedRoute><CreateRecord /></ProtectedRoute>} />
         <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/records" element={<ProtectedRoute><MyRecords /></ProtectedRoute>} />

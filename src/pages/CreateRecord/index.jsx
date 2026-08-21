@@ -10,9 +10,15 @@ export default function CreateRecord(){
     navigate('/records')
   }
   return (
-    <section>
-      <h2>Create Record</h2>
+    <main className="create-record-page">
+      <section className="create-record-page__header">
+        <div>
+          <p className="eyebrow">COMMUNITY REPORT</p>
+          <h1>Create a report</h1>
+          <p>Share a corruption incident or request government intervention.</p>
+        </div>
+      </section>
       <RecordForm onSubmit={handleSubmit} />
-    </section>
+    </main>
   )
 }

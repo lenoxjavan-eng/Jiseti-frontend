@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import StatusBadge from '../components/shared/StatusBadge';
 import ConfirmDialog from '../components/shared/ConfirmDialog';
 import './AdminRecordDetails.css';
+import { fetchRecords, saveRecord } from '../services/api';
 
 /**
  * AdminRecordDetails Page
@@ -12,24 +13,21 @@ const AdminRecordDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Mock data - will be replaced with API calls
-  const [record, setRecord] = useState({
-    id: parseInt(id),
-    title: 'Bribery in Land Registry',
-    description: 'Officials at the land registry demanding bribes for processing land documents. Multiple citizens have reported the same issue.',
-    type: 'red-flag',
-    status: 'Pending',
-    latitude: -1.2921,
-    longitude: 36.8219,
-    createdBy: 'John Doe',
-    createdAt: '2024-08-15',
-    createdByPhone: '+254712345678',
-    createdByEmail: 'john@example.com'
-  });
+  const [record, setRecord] = useState(null);
+
+  useEffect(() => {
+    fetchRecords().then((records) => {
+      setRecord(records.find((item) => String(item.id) === String(id)) || null);
+    });
+  }, [id]);
 
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [statusToChange, setStatusToChange] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  if (!record) {
+    return <main className="admin-record-details">Record not found.</main>;
+  }
 
   const handleStatusChange = (newStatus) => {
     setStatusToChange(newStatus);
@@ -39,9 +37,9 @@ const AdminRecordDetails = () => {
   const confirmStatusChange = async () => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setRecord(prev => ({ ...prev, status: statusToChange }));
+      const updatedRecord = { ...record, status: statusToChange };
+      await saveRecord(updatedRecord);
+      setRecord(updatedRecord);
       setShowConfirmDialog(false);
       setStatusToChange(null);
     } catch (error) {
@@ -129,10 +127,10 @@ const AdminRecordDetails = () => {
             <div className="admin-record-details__status-buttons">
               <button
                 className={`admin-record-details__status-btn admin-record-details__status-btn--investigation ${
-                  record.status === 'Under Investigation' ? 'active' : ''
+                  record.status === 'under-investigation' ? 'active' : ''
                 }`}
-                onClick={() => handleStatusChange('Under Investigation')}
-                disabled={isLoading || record.status === 'Under Investigation'}
+                onClick={() => handleStatusChange('under-investigation')}
+                disabled={isLoading || record.status === 'under-investigation'}
               >
                 🔍 Under Investigation
               </button>
@@ -141,8 +139,8 @@ const AdminRecordDetails = () => {
                 className={`admin-record-details__status-btn admin-record-details__status-btn--rejected ${
                   record.status === 'Rejected' ? 'active' : ''
                 }`}
-                onClick={() => handleStatusChange('Rejected')}
-                disabled={isLoading || record.status === 'Rejected'}
+                onClick={() => handleStatusChange('rejected')}
+                disabled={isLoading || record.status === 'rejected'}
               >
                 ❌ Rejected
               </button>
@@ -151,8 +149,8 @@ const AdminRecordDetails = () => {
                 className={`admin-record-details__status-btn admin-record-details__status-btn--resolved ${
                   record.status === 'Resolved' ? 'active' : ''
                 }`}
-                onClick={() => handleStatusChange('Resolved')}
-                disabled={isLoading || record.status === 'Resolved'}
+                onClick={() => handleStatusChange('resolved')}
+                disabled={isLoading || record.status === 'resolved'}
               >
                 ✓ Resolved
               </button>

@@ -24,7 +24,7 @@ export default function Login(){
     }
 
     signIn(matchingUser)
-    const destination = location.state?.from?.pathname || '/dashboard'
+    const destination = location.state?.from?.pathname || '/records'
     navigate(destination, { replace: true })
   }
 

@@ -7,22 +7,30 @@ import './StatusBadge.css';
  * @param {string} status - The status to display (Under Investigation, Rejected, Resolved)
  */
 const StatusBadge = ({ status }) => {
+  const labels = {
+    pending: 'Pending',
+    'under-investigation': 'Under Investigation',
+    rejected: 'Rejected',
+    resolved: 'Resolved',
+  };
+  const displayStatus = labels[status] || status || 'Pending';
+
   const getStatusClass = () => {
-    switch (status?.toLowerCase()) {
+    switch (displayStatus.toLowerCase()) {
       case 'under investigation':
         return 'status-badge--investigation';
       case 'rejected':
         return 'status-badge--rejected';
       case 'resolved':
         return 'status-badge--resolved';
-      default:
+        default:
         return 'status-badge--default';
     }
   };
 
   return (
     <span className={`status-badge ${getStatusClass()}`}>
-      {status || 'Pending'}
+      {displayStatus}
     </span>
   );
 };

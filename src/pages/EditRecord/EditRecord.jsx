@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import mockRecords from "../../data/mockRecords";
+import { AuthContext } from "../../context/AuthContext";
+import { fetchRecords, saveRecord } from "../../services/api";
 
 export default function EditRecord() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+  const [records, setRecords] = useState([]);
 
-  const record = mockRecords.find(
+  useEffect(() => {
+    fetchRecords().then(setRecords);
+  }, []);
+
+  const record = records.find(
     (item) => String(item.id) === String(id)
   );
 
   // Handle invalid record ID.
-  if (!record) {
+  if (!records.length) {
+    return <main className="flex min-h-screen items-center justify-center bg-slate-50 p-6">Loading record...</main>;
+  }
+
+  if (!record || record.createdBy !== user?.name) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-slate-50 p-6">
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-10 text-center shadow-sm">
@@ -126,10 +137,10 @@ function EditForm({ record, onCancel }) {
 
     through the API service.
   */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("Updated record:", {
+    await saveRecord({
       ...record,
       ...formData,
     });

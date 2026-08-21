@@ -1,51 +1,21 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import StatusBadge from '../components/shared/StatusBadge';
 import SearchBar from '../components/shared/SearchBar';
 import Filter from '../components/shared/Filter';
 import './AdminDashboard.css';
+import { fetchRecords } from '../services/api';
 
 /**
  * AdminDashboard Page
  * Displays all records with search, filter, and management capabilities
  */
 const AdminDashboard = () => {
-  // Mock data - will be replaced with API calls
-  const [records, setRecords] = useState([
-    {
-      id: 1,
-      title: 'Bribery in Land Registry',
-      description: 'Officials demanding bribes for land documents',
-      type: 'red-flag',
-      status: 'Under Investigation',
-      latitude: -1.2921,
-      longitude: 36.8219,
-      createdBy: 'John Doe',
-      createdAt: '2024-08-15'
-    },
-    {
-      id: 2,
-      title: 'Pothole on Main Street',
-      description: 'Major pothole causing traffic hazards',
-      type: 'intervention',
-      status: 'Pending',
-      latitude: -1.2865,
-      longitude: 36.8172,
-      createdBy: 'Jane Smith',
-      createdAt: '2024-08-14'
-    },
-    {
-      id: 3,
-      title: 'Embezzlement Suspected',
-      description: 'Missing funds from municipal budget',
-      type: 'red-flag',
-      status: 'Resolved',
-      latitude: -1.2963,
-      longitude: 36.8269,
-      createdBy: 'Admin User',
-      createdAt: '2024-08-10'
-    }
-  ]);
+  const [records, setRecords] = useState([]);
+
+  useEffect(() => {
+    fetchRecords().then(setRecords);
+  }, []);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({ type: [], status: [] });
@@ -85,7 +55,7 @@ const AdminDashboard = () => {
         <Filter 
           onFilterChange={setFilters}
           types={['red-flag', 'intervention']}
-          statuses={['Pending', 'Under Investigation', 'Rejected', 'Resolved']}
+          statuses={['pending', 'under-investigation', 'rejected', 'resolved']}
         />
       </div>
 
@@ -96,19 +66,19 @@ const AdminDashboard = () => {
         </div>
         <div className="admin-dashboard__stat">
           <div className="admin-dashboard__stat-value">
-            {records.filter(r => r.status === 'Pending').length}
+            {records.filter(r => r.status === 'pending').length}
           </div>
           <div className="admin-dashboard__stat-label">Pending</div>
         </div>
         <div className="admin-dashboard__stat">
           <div className="admin-dashboard__stat-value">
-            {records.filter(r => r.status === 'Under Investigation').length}
+            {records.filter(r => r.status === 'under-investigation').length}
           </div>
           <div className="admin-dashboard__stat-label">Under Investigation</div>
         </div>
         <div className="admin-dashboard__stat">
           <div className="admin-dashboard__stat-value">
-            {records.filter(r => r.status === 'Resolved').length}
+            {records.filter(r => r.status === 'resolved').length}
           </div>
           <div className="admin-dashboard__stat-label">Resolved</div>
         </div>
