@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import StatusBadge from '../components/shared/StatusBadge';
 import ConfirmDialog from '../components/shared/ConfirmDialog';
 import './AdminRecordDetails.css';
-import { fetchRecords, saveRecord } from '../services/api';
+import { fetchRecords, updateRecordStatus } from '../services/api';
 
 /**
  * AdminRecordDetails Page
@@ -37,8 +37,7 @@ const AdminRecordDetails = () => {
   const confirmStatusChange = async () => {
     setIsLoading(true);
     try {
-      const updatedRecord = { ...record, status: statusToChange };
-      await saveRecord(updatedRecord);
+      const updatedRecord = await updateRecordStatus(record.id, statusToChange);
       setRecord(updatedRecord);
       setShowConfirmDialog(false);
       setStatusToChange(null);

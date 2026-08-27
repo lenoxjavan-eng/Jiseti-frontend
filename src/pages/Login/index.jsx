@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
+import { loginUser } from '../../services/api'
 
 export default function Login(){
   const { signIn } = useContext(AuthContext)
@@ -10,22 +11,15 @@ export default function Login(){
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    const users = JSON.parse(window.localStorage.getItem('mockUsers') || '[]')
-    const normalizedEmail = email.trim().toLowerCase()
-    const matchingUser = users.find(
-      (candidate) => candidate.email.toLowerCase() === normalizedEmail && candidate.password === password,
-    )
-
-    if (!matchingUser) {
-      setError('We could not find an account with those details. Register first if you are new.')
-      return
+    try {
+      const session = await loginUser(email.trim().toLowerCase(), password)
+      signIn(session)
+      navigate(location.state?.from?.pathname || '/records', { replace: true })
+    } catch (requestError) {
+      setError(requestError.message)
     }
-
-    signIn(matchingUser)
-    const destination = location.state?.from?.pathname || '/records'
-    navigate(destination, { replace: true })
   }
 
   return (

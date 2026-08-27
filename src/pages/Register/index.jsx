@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
+import { loginUser, registerUser } from '../../services/api'
 
 export default function Register(){
   const { signIn } = useContext(AuthContext)
@@ -10,20 +11,17 @@ export default function Register(){
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    const users = JSON.parse(window.localStorage.getItem('mockUsers') || '[]')
     const normalizedEmail = email.trim().toLowerCase()
-
-    if (users.some((candidate) => candidate.email.toLowerCase() === normalizedEmail)) {
-      setError('An account already exists for this email address. Please log in instead.')
-      return
+    const [first_name, ...lastNameParts] = name.trim().split(/\s+/)
+    try {
+      await registerUser({ email: normalizedEmail, first_name, last_name: lastNameParts.join(' '), password })
+      signIn(await loginUser(normalizedEmail, password))
+      navigate('/')
+    } catch (requestError) {
+      setError(requestError.message)
     }
-
-    const newUser = { name: name.trim(), email: normalizedEmail, password }
-    window.localStorage.setItem('mockUsers', JSON.stringify([...users, newUser]))
-    signIn(newUser)
-    navigate('/')
   }
 
   return (
