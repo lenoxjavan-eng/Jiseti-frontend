@@ -41,7 +41,7 @@ export default function Register(){
           </label>
           <label style={labelStyle}>
             Password
-            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" minLength="6" required style={inputStyle} />
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" minLength="8" required style={inputStyle} />
           </label>
           {error && <p role="alert" style={errorStyle}>{error}</p>}
           <button type="submit" style={buttonStyle}>Create account</button>

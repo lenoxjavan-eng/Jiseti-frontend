@@ -10,7 +10,7 @@ function normalizeRecord(record) {
   return {
     ...record,
     userId: record.user_id,
-    createdBy: record.user_id,
+    createdBy: String(record.user_id),
     createdAt: record.created_at,
     updatedAt: record.updated_at,
   }
