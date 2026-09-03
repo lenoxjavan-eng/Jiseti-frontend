@@ -1,28 +1,70 @@
-const STORAGE_KEY = 'jiseti_records'
+import axios from 'axios'
 
-export async function fetchRecords(){
-  const raw = localStorage.getItem(STORAGE_KEY)
-  if(raw) return JSON.parse(raw)
-  const mock = await import('../data/mockRecords.js')
-  const records = mock.default || []
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(records))
-  return records
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+const ACCESS_TOKEN_KEY = 'accessToken'
+
+const client = axios.create({ baseURL: API_URL })
+
+function authConfig() {
+  const token = window.localStorage.getItem(ACCESS_TOKEN_KEY)
+  return token ? { headers: { Authorization: `Bearer ${token}` } } : {}
 }
 
-export async function saveRecord(record){
-  const list = await fetchRecords()
-  const idx = list.findIndex(r=> r.id === record.id)
-  if(idx >= 0) list[idx] = record
-  else list.push(record)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(list))
-  return record
+function toFrontendRecord(record) {
+  const storedUser = window.localStorage.getItem('currentUser')
+  const currentUser = storedUser ? JSON.parse(storedUser) : null
+  return {
+    ...record,
+    createdBy: record.createdBy || record.user_name || currentUser?.name || 'You',
+    createdAt: record.createdAt || record.created_at,
+  }
 }
 
-export async function deleteRecord(recordId){
-  const list = await fetchRecords()
-  const remaining = list.filter((record) => String(record.id) !== String(recordId))
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(remaining))
-  return remaining
+export async function login(credentials) {
+  const { data } = await client.post('/auth/login/', credentials)
+  window.localStorage.setItem(ACCESS_TOKEN_KEY, data.access)
+  return data
 }
 
-export default { fetchRecords, saveRecord, deleteRecord }
+export async function register(user) {
+  const { data } = await client.post('/auth/register/', user)
+  return data
+}
+
+export async function fetchRecords({ all = false } = {}) {
+  const endpoint = all ? '/records/' : '/records/my-records/'
+  const { data } = await client.get(endpoint, authConfig())
+  return data.map(toFrontendRecord)
+}
+
+export async function saveRecord(record) {
+  const payload = {
+    title: record.title,
+    description: record.description,
+    type: record.type,
+    latitude: record.latitude || null,
+    longitude: record.longitude || null,
+  }
+  const { data } = await client.post('/records/', payload, authConfig())
+  return toFrontendRecord(data)
+}
+
+export async function updateRecordStatus(recordId, status) {
+  const { data } = await client.patch(
+    `/admin/records/${recordId}/status/`,
+    { status },
+    authConfig(),
+  )
+  return toFrontendRecord(data)
+}
+
+export async function deleteRecord(recordId) {
+  await client.delete(`/records/${recordId}/`, authConfig())
+  return fetchRecords()
+}
+
+export function clearAccessToken() {
+  window.localStorage.removeItem(ACCESS_TOKEN_KEY)
+}
+
+export default { fetchRecords, saveRecord, updateRecordStatus, deleteRecord, login, register, clearAccessToken }

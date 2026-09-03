@@ -8,7 +8,7 @@ export default function Home() {
   const [records, setRecords] = useState([])
 
   useEffect(() => {
-    fetchRecords().then(setRecords)
+    fetchRecords({ all: true }).then(setRecords)
   }, [])
 
   const stats = useMemo(() => ({

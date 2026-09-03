@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
+import { login, register } from '../../services/api'
 
 export default function Register(){
   const { signIn } = useContext(AuthContext)
@@ -10,20 +11,23 @@ export default function Register(){
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    const users = JSON.parse(window.localStorage.getItem('mockUsers') || '[]')
     const normalizedEmail = email.trim().toLowerCase()
-
-    if (users.some((candidate) => candidate.email.toLowerCase() === normalizedEmail)) {
-      setError('An account already exists for this email address. Please log in instead.')
-      return
+    setError('')
+    try {
+      await register({
+        email: normalizedEmail,
+        first_name: name.trim().split(/\s+/)[0],
+        last_name: name.trim().split(/\s+/).slice(1).join(' '),
+        password,
+      })
+      await login({ email: normalizedEmail, password })
+      signIn({ name: name.trim(), email: normalizedEmail, role: 'user' })
+      navigate('/')
+    } catch {
+      setError('We could not create your account. Check your details and try again.')
     }
-
-    const newUser = { name: name.trim(), email: normalizedEmail, password }
-    window.localStorage.setItem('mockUsers', JSON.stringify([...users, newUser]))
-    signIn(newUser)
-    navigate('/')
   }
 
   return (
@@ -43,7 +47,7 @@ export default function Register(){
           </label>
           <label style={labelStyle}>
             Password
-            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" minLength="6" required style={inputStyle} />
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" minLength="8" required style={inputStyle} />
           </label>
           {error && <p role="alert" style={errorStyle}>{error}</p>}
           <button type="submit" style={buttonStyle}>Create account</button>

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import StatusBadge from '../components/shared/StatusBadge';
 import ConfirmDialog from '../components/shared/ConfirmDialog';
 import './AdminRecordDetails.css';
-import { fetchRecords, saveRecord } from '../services/api';
+import { fetchRecords, updateRecordStatus } from '../services/api';
 
 /**
  * AdminRecordDetails Page
@@ -16,7 +16,7 @@ const AdminRecordDetails = () => {
   const [record, setRecord] = useState(null);
 
   useEffect(() => {
-    fetchRecords().then((records) => {
+    fetchRecords({ all: true }).then((records) => {
       setRecord(records.find((item) => String(item.id) === String(id)) || null);
     });
   }, [id]);
@@ -37,8 +37,7 @@ const AdminRecordDetails = () => {
   const confirmStatusChange = async () => {
     setIsLoading(true);
     try {
-      const updatedRecord = { ...record, status: statusToChange };
-      await saveRecord(updatedRecord);
+      const updatedRecord = await updateRecordStatus(record.id, statusToChange);
       setRecord(updatedRecord);
       setShowConfirmDialog(false);
       setStatusToChange(null);
@@ -137,7 +136,7 @@ const AdminRecordDetails = () => {
 
               <button
                 className={`admin-record-details__status-btn admin-record-details__status-btn--rejected ${
-                  record.status === 'Rejected' ? 'active' : ''
+                  record.status === 'rejected' ? 'active' : ''
                 }`}
                 onClick={() => handleStatusChange('rejected')}
                 disabled={isLoading || record.status === 'rejected'}
@@ -147,7 +146,7 @@ const AdminRecordDetails = () => {
 
               <button
                 className={`admin-record-details__status-btn admin-record-details__status-btn--resolved ${
-                  record.status === 'Resolved' ? 'active' : ''
+                  record.status === 'resolved' ? 'active' : ''
                 }`}
                 onClick={() => handleStatusChange('resolved')}
                 disabled={isLoading || record.status === 'resolved'}

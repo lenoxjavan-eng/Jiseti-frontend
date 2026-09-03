@@ -14,7 +14,7 @@ const AdminDashboard = () => {
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    fetchRecords().then(setRecords);
+    fetchRecords({ all: true }).then(setRecords);
   }, []);
 
   const [searchTerm, setSearchTerm] = useState('');

@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react'
+import { clearAccessToken } from '../services/api'
 
 export const AuthContext = createContext(null)
 
@@ -24,6 +25,7 @@ export function AuthProvider({ children }){
 
   function signOut() {
     window.localStorage.removeItem(CURRENT_USER_KEY)
+    clearAccessToken()
     setUser(null)
   }
 

@@ -1,9 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
-
-const ADMIN_EMAIL = 'admin@jiseti.local'
-const ADMIN_PASSWORD = 'Admin@123'
+import { login } from '../../services/api'
 
 export default function AdminLogin() {
   const { signIn } = useContext(AuthContext)
@@ -12,16 +10,16 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-
-    if (email.trim().toLowerCase() !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+    setError('')
+    try {
+      await login({ email: email.trim().toLowerCase(), password })
+      signIn({ name: 'Jiseti Administrator', email: email.trim().toLowerCase(), role: 'admin' })
+      navigate('/admin/dashboard', { replace: true })
+    } catch {
       setError('Invalid administrator email or password.')
-      return
     }
-
-    signIn({ name: 'Jiseti Administrator', email: ADMIN_EMAIL, role: 'admin' })
-    navigate('/admin/dashboard', { replace: true })
   }
 
   return (
