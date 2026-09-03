@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
-import { login } from '../../services/api'
+import { fetchProfile, login } from '../../services/api'
 
 export default function Login(){
   const { signIn } = useContext(AuthContext)
@@ -16,7 +16,12 @@ export default function Login(){
     setError('')
     try {
       await login({ email: email.trim().toLowerCase(), password })
-      signIn({ name: email.trim().toLowerCase(), email, role: 'user' })
+      const profile = await fetchProfile()
+      signIn({
+        name: `${profile.first_name} ${profile.last_name}`.trim() || profile.email,
+        email: profile.email,
+        role: 'user',
+      })
     } catch {
       setError('We could not sign you in with those details.')
       return

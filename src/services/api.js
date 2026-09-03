@@ -10,12 +10,12 @@ function authConfig() {
   return token ? { headers: { Authorization: `Bearer ${token}` } } : {}
 }
 
-function toFrontendRecord(record) {
+function toFrontendRecord(record, fallbackName) {
   const storedUser = window.localStorage.getItem('currentUser')
   const currentUser = storedUser ? JSON.parse(storedUser) : null
   return {
     ...record,
-    createdBy: record.createdBy || record.user_name || currentUser?.name || 'You',
+    createdBy: record.createdBy || record.user_name || fallbackName || currentUser?.name || 'You',
     createdAt: record.createdAt || record.created_at,
   }
 }
@@ -31,10 +31,17 @@ export async function register(user) {
   return data
 }
 
+export async function fetchProfile() {
+  const { data } = await client.get('/auth/profile/', authConfig())
+  return data
+}
+
 export async function fetchRecords({ all = false } = {}) {
   const endpoint = all ? '/records/' : '/records/my-records/'
   const { data } = await client.get(endpoint, authConfig())
-  return data.map(toFrontendRecord)
+  const storedUser = window.localStorage.getItem('currentUser')
+  const currentUser = storedUser ? JSON.parse(storedUser) : null
+  return data.map((record) => toFrontendRecord(record, all ? undefined : currentUser?.name))
 }
 
 export async function saveRecord(record) {
