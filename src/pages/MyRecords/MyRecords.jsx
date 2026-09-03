@@ -29,7 +29,6 @@ const filters = [
 
 export default function MyRecords() {
   const { user } = useContext(AuthContext);
-  const currentUser = user?.name || "";
 
   const [records, setRecords] = useState([]);
   const [activeFilter, setActiveFilter] =
@@ -41,9 +40,9 @@ export default function MyRecords() {
 
   const userRecords = useMemo(() => {
     return records.filter(
-      (record) => record.createdBy === currentUser
+      (record) => String(record.userId) === String(user?.id)
     );
-  }, [records, currentUser]);
+  }, [records, user]);
 
   async function handleDelete(recordId) {
     const confirmed = window.confirm("Are you sure you want to delete this record?");
