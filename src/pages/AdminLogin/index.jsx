@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
-import { login } from '../../services/api'
+import { fetchProfile, login } from '../../services/api'
 
 export default function AdminLogin() {
   const { signIn } = useContext(AuthContext)
@@ -15,7 +15,16 @@ export default function AdminLogin() {
     setError('')
     try {
       await login({ email: email.trim().toLowerCase(), password })
-      signIn({ name: 'Jiseti Administrator', email: email.trim().toLowerCase(), role: 'admin' })
+      const profile = await fetchProfile()
+      if (!profile.is_staff) {
+        throw new Error('Administrator access is required.')
+      }
+      signIn({
+        id: profile.id,
+        name: `${profile.first_name} ${profile.last_name}`.trim() || profile.email,
+        email: profile.email,
+        role: 'admin',
+      })
       navigate('/admin/dashboard', { replace: true })
     } catch {
       setError('Invalid administrator email or password.')
