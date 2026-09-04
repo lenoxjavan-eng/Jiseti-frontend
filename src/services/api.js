@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+const API_URL = import.meta.env.VITE_API_URL || (
+  import.meta.env.PROD
+    ? 'https://jiseti-backend-xzt6.onrender.com/api'
+    : 'http://localhost:8000/api'
+)
 const ACCESS_TOKEN_KEY = 'accessToken'
 const REFRESH_TOKEN_KEY = 'refreshToken'
 

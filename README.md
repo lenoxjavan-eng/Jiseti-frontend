@@ -1,5 +1,11 @@
 # Jiseti Frontend
 
+## Deployment
+
+Set `VITE_API_URL` to the deployed backend API URL, for example
+`https://jiseti-backend-xzt6.onrender.com/api`, before building the frontend.
+Production builds use that Render URL by default when the variable is omitted.
+
 This repository started from a React + Vite template and has been customized for the Jiseti frontend.
 
 ## Template notes
