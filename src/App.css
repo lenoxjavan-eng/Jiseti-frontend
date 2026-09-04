@@ -470,6 +470,36 @@ body {
   text-overflow: ellipsis;
 }
 
+.records-page__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.records-page__action {
+  padding: 7px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  color: #374151;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.records-page__action--edit:hover {
+  background: #f3f4f6;
+}
+
+.records-page__action--delete {
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.records-page__action--delete:hover {
+  background: #fef2f2;
+}
+
 .public-dashboard__type-badge {
   display: inline-block;
   padding: 4px 8px;

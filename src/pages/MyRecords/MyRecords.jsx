@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 
-import RecordCard from "../../components/RecordCard/RecordCard";
+import StatusBadge from "../../components/shared/StatusBadge";
 import { AuthContext } from "../../context/AuthContext";
 import { deleteRecord, fetchRecords } from "../../services/api";
 
@@ -103,13 +103,57 @@ export default function MyRecords() {
 
         <section className="records-page__list">
           {filteredRecords.length > 0 ? (
-            filteredRecords.map((record) => (
-              <RecordCard
-                key={record.id}
-                record={record}
-                onDelete={handleDelete}
-              />
-            ))
+            <div className="public-dashboard__table-wrapper">
+              <table className="public-dashboard__table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredRecords.map((record) => (
+                    <tr key={record.id}>
+                      <td className="public-dashboard__cell public-dashboard__cell--title">
+                        {record.title}
+                      </td>
+                      <td className="public-dashboard__cell">
+                        <span className="public-dashboard__type-badge">{record.type}</span>
+                      </td>
+                      <td className="public-dashboard__cell">
+                        <StatusBadge status={record.status} />
+                      </td>
+                      <td className="public-dashboard__cell">
+                        {new Date(record.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="public-dashboard__cell records-page__actions">
+                        {record.status === "pending" && (
+                          <>
+                            <button
+                              type="button"
+                              className="records-page__action records-page__action--edit"
+                              onClick={() => window.location.assign(`/records/${record.id}/edit`)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              className="records-page__action records-page__action--delete"
+                              onClick={() => handleDelete(record.id)}
+                            >
+                              Delete
+                            </button>
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <div className="records-page__empty">
               <h3>
