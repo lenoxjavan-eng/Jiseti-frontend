@@ -18,6 +18,7 @@ export default function Login(){
       await login({ email: email.trim().toLowerCase(), password })
       const profile = await fetchProfile()
       signIn({
+        id: profile.id,
         name: `${profile.first_name} ${profile.last_name}`.trim() || profile.email,
         email: profile.email,
         role: 'user',

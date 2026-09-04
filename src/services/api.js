@@ -15,9 +15,16 @@ function toFrontendRecord(record, fallbackName) {
   const currentUser = storedUser ? JSON.parse(storedUser) : null
   return {
     ...record,
+    userId: record.userId || record.user_id,
     createdBy: record.createdBy || record.user_name || fallbackName || currentUser?.name || 'You',
     createdAt: record.createdAt || record.created_at,
   }
+}
+
+function normalizeCoordinate(value) {
+  if (value === '' || value === null || value === undefined) return null
+  const coordinate = Number(value)
+  return Number.isFinite(coordinate) ? coordinate.toFixed(6) : null
 }
 
 export async function login(credentials) {
@@ -49,8 +56,8 @@ export async function saveRecord(record) {
     title: record.title,
     description: record.description,
     type: record.type,
-    latitude: record.latitude || null,
-    longitude: record.longitude || null,
+    latitude: normalizeCoordinate(record.latitude),
+    longitude: normalizeCoordinate(record.longitude),
   }
   const { data } = await client.post('/records/', payload, authConfig())
   return toFrontendRecord(data)

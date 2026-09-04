@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
-import { login, register } from '../../services/api'
+import { fetchProfile, login, register } from '../../services/api'
 
 export default function Register(){
   const { signIn } = useContext(AuthContext)
@@ -23,7 +23,13 @@ export default function Register(){
         password,
       })
       await login({ email: normalizedEmail, password })
-      signIn({ name: name.trim(), email: normalizedEmail, role: 'user' })
+      const profile = await fetchProfile()
+      signIn({
+        id: profile.id,
+        name: `${profile.first_name} ${profile.last_name}`.trim() || profile.email,
+        email: profile.email,
+        role: 'user',
+      })
       navigate('/')
     } catch {
       setError('We could not create your account. Check your details and try again.')
