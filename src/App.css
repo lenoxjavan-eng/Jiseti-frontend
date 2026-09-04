@@ -416,8 +416,69 @@ body {
 
 .public-dashboard__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
   gap: 16px;
+}
+
+.public-dashboard__table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.public-dashboard__table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+}
+
+.public-dashboard__table thead {
+  background: #f3f4f6;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.public-dashboard__table th {
+  padding: 16px;
+  color: var(--text-light);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.public-dashboard__table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.public-dashboard__table tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.public-dashboard__cell {
+  padding: 16px;
+  color: #374151;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.public-dashboard__cell--title {
+  max-width: 280px;
+  overflow: hidden;
+  color: var(--text-dark);
+  font-weight: 600;
+  text-overflow: ellipsis;
+}
+
+.public-dashboard__type-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  color: #0369a1;
+  background: #dbeafe;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .create-record-page {

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Footer from '../../components/Footer'
-import RecordCard from '../../components/RecordCard/RecordCard'
+import StatusBadge from '../../components/shared/StatusBadge'
 import { fetchRecords } from '../../services/api'
 
 export default function Home() {
@@ -52,9 +52,40 @@ export default function Home() {
             <span>{records.length} published records</span>
           </div>
           <div className="public-dashboard__grid">
-            {recentRecords.length > 0 ? recentRecords.map((record) => (
-              <RecordCard key={record.id} record={record} showActions={false} />
-            )) : <p>No reports have been submitted yet.</p>}
+            {recentRecords.length > 0 ? (
+              <div className="public-dashboard__table-wrapper">
+                <table className="public-dashboard__table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                      <th>Created by</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recentRecords.map((record) => (
+                      <tr key={record.id}>
+                        <td className="public-dashboard__cell public-dashboard__cell--title">
+                          {record.title}
+                        </td>
+                        <td className="public-dashboard__cell">
+                          <span className="public-dashboard__type-badge">{record.type}</span>
+                        </td>
+                        <td className="public-dashboard__cell">
+                          <StatusBadge status={record.status} />
+                        </td>
+                        <td className="public-dashboard__cell">{record.createdBy}</td>
+                        <td className="public-dashboard__cell">
+                          {new Date(record.createdAt).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : <p>No reports have been submitted yet.</p>}
           </div>
         </section>
       </main>
