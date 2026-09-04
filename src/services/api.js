@@ -2,8 +2,28 @@ import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
 const ACCESS_TOKEN_KEY = 'accessToken'
+const REFRESH_TOKEN_KEY = 'refreshToken'
 
 const client = axios.create({ baseURL: API_URL })
+
+client.interceptors.response.use(undefined, async (error) => {
+  const request = error.config
+  const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY)
+  if (error.response?.status !== 401 || request?._retry || !refreshToken) {
+    return Promise.reject(error)
+  }
+
+  request._retry = true
+  try {
+    const { data } = await axios.post(`${API_URL}/auth/token/refresh/`, { refresh: refreshToken })
+    window.localStorage.setItem(ACCESS_TOKEN_KEY, data.access)
+    request.headers.Authorization = `Bearer ${data.access}`
+    return client(request)
+  } catch (refreshError) {
+    clearAccessToken()
+    return Promise.reject(refreshError)
+  }
+})
 
 function authConfig() {
   const token = window.localStorage.getItem(ACCESS_TOKEN_KEY)
@@ -30,6 +50,7 @@ function normalizeCoordinate(value) {
 export async function login(credentials) {
   const { data } = await client.post('/auth/login/', credentials)
   window.localStorage.setItem(ACCESS_TOKEN_KEY, data.access)
+  window.localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh)
   return data
 }
 
@@ -79,6 +100,7 @@ export async function deleteRecord(recordId) {
 
 export function clearAccessToken() {
   window.localStorage.removeItem(ACCESS_TOKEN_KEY)
+  window.localStorage.removeItem(REFRESH_TOKEN_KEY)
 }
 
 export default { fetchRecords, saveRecord, updateRecordStatus, deleteRecord, login, register, clearAccessToken }

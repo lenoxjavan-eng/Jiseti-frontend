@@ -16,7 +16,7 @@ export default function RecordForm({ initial = {}, onSubmit }){
     setForm(prev=>({ ...prev, ...fields }))
   }
 
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.preventDefault()
     const record = {
       ...form,
@@ -24,7 +24,7 @@ export default function RecordForm({ initial = {}, onSubmit }){
       createdBy: initial.createdBy || 'anonymous',
       createdAt: initial.createdAt || new Date().toISOString()
     }
-    if(onSubmit) onSubmit(record)
+    if(onSubmit) await onSubmit(record)
   }
 
   return (
